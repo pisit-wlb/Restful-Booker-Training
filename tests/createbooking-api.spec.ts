@@ -1,18 +1,21 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, request } from '@playwright/test';
 
-test('has title', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
+let token: any;
+test("เข้าสู่ระบบและ การจองด้วย firstname lastname และ เวลา Checkin Checkout", async ({ request }) => {
 
-  // Expect a title "to contain" a substring.
-  await expect(page).toHaveTitle(/Playwright/);
-});
-
-test('get started link', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
-
-  // Click the get started link.
-  await page.getByRole('link', { name: 'Get started' }).click();
-
-  // Expects page to have a heading with the name of Installation.
-  await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
+	await test.step("เข้าสู่ระบบด้วย Username และ Password", async () => {
+		const responseLogin = await request.post("https://restful-booker.herokuapp.com/auth", {
+			data: {
+				"username" : "admin",
+				"password" : "password123"
+			}
+		})
+		expect(responseLogin.ok()).toBeTruthy();
+		const responseBody = await responseLogin.json();
+		await test.info().attach("API-Token Response", {
+			body: JSON.stringify(responseBody, null, 2),
+			contentType: "application/json"
+		});
+		token = responseBody.token;
+	});
 });
