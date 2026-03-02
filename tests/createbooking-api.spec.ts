@@ -13,7 +13,7 @@ test("เข้าสู่ระบบและ การจองด้วย 
 		expect(responseLogin.ok()).toBeTruthy();
 		const responseBody = await responseLogin.json();
 		await test.info().attach("API-Token Response", {
-			body: JSON.stringify(responseBody, null, 2),
+			body: JSON.stringify(responseBody),
 			contentType: "application/json"
 		});
 		token = responseBody.token;
@@ -40,7 +40,7 @@ test("เข้าสู่ระบบและ การจองด้วย 
 		expect(responseCreateBooking.ok()).toBeTruthy();
 		const responseBody = await responseCreateBooking.json();
 		await test.info().attach("API-Booking Response", {
-			body: JSON.stringify(responseBody, null, 2),
+			body: JSON.stringify(responseBody),
 			contentType: "application/json"
 		});
 				expect(responseBody.booking).toMatchObject({
